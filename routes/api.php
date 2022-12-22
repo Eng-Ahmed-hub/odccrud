@@ -20,7 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 });
 Route::get('/article', [\App\Http\Controllers\Api\ArticleController::class, 'index']);
-Route::get('/user-profile', [\App\Http\Controllers\Api\ArticleController::class, 'show']);
+Route::get('/show', [\App\Http\Controllers\Api\ArticleController::class, 'show']);
 Route::get('/store', [\App\Http\Controllers\Api\ArticleController::class, 'store']);
-Route::post('/user-profile', [\App\Http\Controllers\Api\ArticleController::class, 'update']);
-Route::post('/user-profile', [\App\Http\Controllers\Api\ArticleController::class, 'destroy']);
+Route::get('/update', [\App\Http\Controllers\Api\ArticleController::class, 'update']);
+Route::get('/delete', [\App\Http\Controllers\Api\ArticleController::class, 'destroy']);
