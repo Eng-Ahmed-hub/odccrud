@@ -18,10 +18,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::get('/article', [\App\Http\Controllers\Api\ArticleController::class, 'index']);
-Route::get('/show', [\App\Http\Controllers\Api\ArticleController::class, 'show']);
-Route::get('/store', [\App\Http\Controllers\Api\ArticleController::class, 'store']);
-Route::get('/update', [\App\Http\Controllers\Api\ArticleController::class, 'update']);
-Route::get('/delete', [\App\Http\Controllers\Api\ArticleController::class, 'destroy']);
+Route::get('/show/{id}', [\App\Http\Controllers\Api\ArticleController::class, 'show']);
+Route::post('/article/store', [\App\Http\Controllers\Api\ArticleController::class, 'store']);
+Route::post('/update/{id}', [\App\Http\Controllers\Api\ArticleController::class, 'update']);
+Route::get('/delete/{id}', [\App\Http\Controllers\Api\ArticleController::class, 'destroy']);
 
 Route::post('/post/create', 'App\Http\Controllers\ApiPostController@create');
 Route::post('/post/update/{id}', 'App\Http\Controllers\ApiPostController@update');

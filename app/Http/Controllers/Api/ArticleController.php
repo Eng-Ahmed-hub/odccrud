@@ -48,13 +48,8 @@ class ArticleController extends Controller
     public function store(Request $request)
     {
             $input = $request->all();
-            $validator = Validator::make($input, [
-            'title' => 'required',
-            'description' => 'required'
-            ]);
-            if($validator->fails()){
-            return $this->sendError('Validation Error.', $validator->errors());
-            }
+
+
             $article = Article::create($input);
             return response()->json([
             "success" => true,
@@ -111,18 +106,12 @@ class ArticleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Article $article)
+    public function update(Request $request,$id)
     {
         $input = $request->all();
-$validator = Validator::make($input, [
-'title' => 'required',
-'description' => 'required'
-]);
-if($validator->fails()){
-return $this->sendError('Validation Error.', $validator->errors());
-}
-$article->title = $input['name'];
-$article->description = $input['detail'];
+        $article=Article::findOrFail($id);
+$article->title = $request->title;
+$article->description = $request->description;
 $article->save();
 return response()->json([
 "success" => true,
@@ -137,8 +126,9 @@ return response()->json([
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Article $article)
+    public function destroy($id)
     {
+        $article=Article::findOrFail($id);
         $article->delete();
 return response()->json([
 "success" => true,
