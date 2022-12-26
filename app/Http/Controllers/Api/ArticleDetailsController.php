@@ -4,12 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Traits\ApiHelperTrait;
+use App\Models\ArcticalDetails;
 use App\Models\Article;
 use App\Models\Governorate;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Request;
 
-class ArticleController extends Controller
+class ArticleDetailsController extends Controller
 {
     use ApiHelperTrait;
     /**
@@ -17,9 +18,9 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        $article = Article::all();
+        $article = ArcticalDetails::where('arctical_id', $id)->get();
         if ($article) {
             return $this->successResponse('article', $article, 200, 'done');
         } else {
@@ -34,7 +35,7 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
         //
     }
@@ -45,17 +46,17 @@ class ArticleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
         $input = $request->all();
-        if ($request->image) {
+        $input['arctical_id'] = $id;
+        if ($input['image']) {
             $fileName = time() . '.' . $request->image->extension();
-            $request->image->move(public_path('articl'), $fileName);
-            $input['image'] = 'articl/' . $fileName;
+            $request->image->move(public_path('articl-details'), $fileName);
+            $inputs['image'] = 'articl-details/' . $fileName;
         }
 
-        $article = Article::create($input);
-
+        $article = ArcticalDetails::create($input);
         return response()->json([
             "success" => true,
             "message" => "article created successfully."
@@ -70,7 +71,7 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
-        $article = Article::find($id);
+        $article = ArcticalDetails::find($id);
         if ($article) {
             return $this->successResponse("Article", $article, 200, 'done');
         } else {
@@ -78,19 +79,6 @@ class ArticleController extends Controller
             return $this->errorResponse('Article not found', 404);
         }
     }
-    public function active(Request $request)
-    {
-        try {
-            $article = Article::findOrFail($request->id);
-            $article->status = $request->active;
-            $article->save();
-            return $this->successMessage('تم التحديث بنجاح');
-        } catch (\Throwable $th) {
-            return $this->errorResponse('حدث خطا ما ', 404);
-        }
-    }
-
-
 
     /**
      * Show the form for editing the specified resource.
@@ -112,14 +100,14 @@ class ArticleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $input = $request->all();
-        $article = Article::findOrFail($id);
+
+        $article = ArcticalDetails::findOrFail($id);
         $article->title = $request->title;
         $article->description = $request->description;
         if ($request->image) {
             $fileName = time() . '.' . $request->image->extension();
-            $request->image->move(public_path('articl'), $fileName);
-            $article->image = 'articl/' . $fileName;
+            $request->image->move(public_path('articl-details'), $fileName);
+            $article->image = 'articl-details/' . $fileName;
         }
         $article->save();
         return response()->json([
@@ -136,11 +124,11 @@ class ArticleController extends Controller
      */
     public function destroy($id)
     {
-        $article = Article::findOrFail($id);
+        $article = ArcticalDetails::findOrFail($id);
         $article->delete();
         return response()->json([
             "success" => true,
-            "message" => "Product deleted successfully.",
+            "message" => "Product deleted successfully."
         ]);
     }
 }
