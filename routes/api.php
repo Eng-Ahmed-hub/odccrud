@@ -33,12 +33,8 @@ Route::post('/article/details/update/{id}', [\App\Http\Controllers\Api\ArticleDe
 Route::get('/article/details/delete/{id}', [\App\Http\Controllers\Api\ArticleDetailsController::class, 'destroy']);
 
 
-
-
-
-Route::post('/post/create', 'App\Http\Controllers\ApiPostController@create');
-Route::post('/post/update/{id}', 'App\Http\Controllers\ApiPostController@update');
-Route::get('/post/delete/{id}', 'App\Http\Controllers\ApiPostController@delete');
-Route::get('/posts', 'App\Http\Controllers\ApiPostController@index');
-Route::get('/post/index', 'App\Http\Controllers\ApiPostController@index');
-Route::get('/post/show/{id}', 'App\Http\Controllers\ApiPostController@show');
+Route::get('/posts', [\App\Http\Controllers\Api\PostController::class, 'index']);
+Route::post('/post/create', [\App\Http\Controllers\Api\PostController::class, 'create']);
+Route::post('/post/update/{id}', [\App\Http\Controllers\Api\PostController::class, 'update']);
+Route::get('/post/delete/{id}', [\App\Http\Controllers\Api\PostController::class, 'delete']);
+Route::get('/post/show/{id}', [\App\Http\Controllers\Api\PostController::class, 'show']);
